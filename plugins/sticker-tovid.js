@@ -35,11 +35,11 @@ let stiker = false
       } catch (e) {
         throw eror
       }
-     await conn.sendFile(m.chat, out, 'tovid.mp4', 'تم عملية تحويل الملصق لفيديو بنجاح \n تابعني في الانستغرام\ninstagram.com/alkaser7009' , m)
+     await conn.sendFile(m.chat, out, 'tovid.mp4', 'تم عملية تحويل الملصق لفيديو بنجاح \n تابعني في الانستغرام\ninstagram.com/noureddine_ouafy' , m)
 }
 //lo mau apa??
 handler.help = ['tovideo']
 handler.tags = ['sticker']
-handler.command = /^tovid$/i
+handler.command = /^tovideo$/i
 
 export default handler
