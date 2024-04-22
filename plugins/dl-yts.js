@@ -1,37 +1,22 @@
-import axios from 'axios';
-
-let handler = async (m, { conn, text }) => {
-  if (!text) throw '✳️ What do you want me to search for on YouTube?';
-
-  try {
-    const query = encodeURIComponent(text);
-    const response = await axios.get(`https://weeb-api.vercel.app/ytsearch?query=${query}`);
-    const results = response.data;
-
-    if (results.length === 0) {
-      throw 'No results found for the given query.';
-    }
-
-    const firstResult = results[0];
-
-    const message = `
-乂 ${firstResult.title}
-乂 *Link* : ${firstResult.url}
-乂 *Duration* : ${firstResult.timestamp}
-乂 *Published :* ${firstResult.ago}
-乂 *Views:* ${firstResult.views}
-
-    `;
-
-    conn.sendFile(m.chat, firstResult.thumbnail, 'yts.jpeg', message, m);
-  } catch (error) {
-    console.error(error);
-    throw 'An error occurred while searching for YouTube videos.';
-  }
-};
-
-handler.help = ['ytsearch'];
-handler.tags = ['downloader'];
-handler.command = ['ytsearch', 'yts'];
-
-export default handler;
+import yts from 'yt-search'
+import fs from  'fs'
+let handler = async (m, {conn, text }) => {
+  if (!text) throw ' هذا الامر خاص بالبحث في اليوتوب وأخذ رابط الفيديو \n مثلا :\n *.yts*   noureddine ouafy whatsapp bot'
+  await conn.reply(m.chat, global.wait, m)
+  let results = await yts(text)
+  let tes = results.all
+  let teks = results.all.map(v => {
+    switch (v.type) {
+      case  'video' : return `
+° *_${v.title}_*
+↳ 🫐 *_L :_* ${v.url}
+↳ 🕒 *_D :_* ${v.timestamp}
+↳ 📥 *_S :_* ${v.ago}
+↳ 👁 *_V :_* ${v.views}`}}).filter(v => v).join('\n\n◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦\n\n' )
+  conn.sendFile(m.chat, tes[0].thumbnail, 'yts.jpeg' , teks, m)
+}
+handler.help = [ 'yts' ] 
+handler.tags = [ 'download','search']
+handler.command = [ 'yts' ,  'ytss' ] 
+export default handler
+ 
