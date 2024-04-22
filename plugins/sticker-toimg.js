@@ -1,17 +1,13 @@
-import { webp2png } from '../lib/webp2mp4.js'
-
 let handler = async (m, { conn, usedPrefix, command }) => {
-    const notStickerMessage = `✳️ Reply to a sticker with :\n\n *${usedPrefix + command}*`
-    if (!m.quoted) throw notStickerMessage
-    const q = m.quoted || m
-    let mime = q.mediaType || ''
-    if (!/sticker/.test(mime)) throw notStickerMessage
-    let media = await q.download()
-    let out = await webp2png(media).catch(_ => null) || Buffer.alloc(0)
-    await conn.sendFile(m.chat, out, 'out.png', '*✅ Here you have*', m)
+  const notStickerMessage = `✳️ المرجو الاشارة للملصق الذي تريد تحويله لصورة ثم اكتب :\n\n *${usedPrefix + command}*`
+  if (!m.quoted) throw notStickerMessage
+  const q = m.quoted || m
+  let mime = q.mediaType || ''
+  if (/webp/.test(mime)) throw notStickerMessage
+  let media = await q.download()
+  await conn.sendMessage(m.chat, {image: media, caption: 'instagram.com/alkaser7008'}, {quoted: m})
 }
-handler.help = ['toimg <sticker>']
+handler.help = ['toimg']
 handler.tags = ['sticker']
-handler.command = ['toimg', 'jpg', 'aimg'] 
-
+handler.command = /^(toimg)$/i
 export default handler
